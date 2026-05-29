@@ -1,0 +1,13 @@
+/* 1) 디자인 토큰 CSS 변수 (light/dark) */
+@import "@skyface/theme/variables.css";
+
+/* 2) Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: rgb(var(--sf-color-background));
+  color: rgb(var(--sf-color-foreground));
+  font-family: var(--sf-font-sans);
+}

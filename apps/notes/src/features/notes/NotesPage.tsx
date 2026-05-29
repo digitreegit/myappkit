@@ -4,11 +4,11 @@ import {
   Button,
   Card,
   CardBody,
+  ConfirmDialog,
   EmptyState,
-  Input,
   LoadingState,
-  Modal,
   PageHeader,
+  SearchBar,
   Text,
   useToast,
 } from "@skyface/ui";
@@ -76,11 +76,7 @@ export function NotesPage({ dark, onToggleTheme }: NotesPageProps) {
       />
 
       <div className="mb-4">
-        <Input
-          placeholder="노트 검색…"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <SearchBar value={search} onChange={setSearch} placeholder="노트 검색…" />
       </div>
 
       {list.isLoading ? (
@@ -141,27 +137,15 @@ export function NotesPage({ dark, onToggleTheme }: NotesPageProps) {
         }}
       />
 
-      <Modal
+      <ConfirmDialog
         isOpen={!!confirmId}
         onClose={() => setConfirmId(null)}
+        onConfirm={() => confirmId && handleDelete(confirmId)}
         title="노트 삭제"
-        footer={
-          <>
-            <Button variant="ghost" onClick={() => setConfirmId(null)}>
-              취소
-            </Button>
-            <Button
-              variant="danger"
-              isLoading={remove.isPending}
-              onClick={() => confirmId && handleDelete(confirmId)}
-            >
-              삭제
-            </Button>
-          </>
-        }
-      >
-        <Text variant="body">이 노트를 삭제할까요? 되돌릴 수 없습니다.</Text>
-      </Modal>
+        message="이 노트를 삭제할까요? 되돌릴 수 없습니다."
+        confirmLabel="삭제"
+        isLoading={remove.isPending}
+      />
     </div>
   );
 }

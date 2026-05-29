@@ -21,6 +21,8 @@ Figma의 컴포넌트와 `packages/ui` 의 코드 컴포넌트를 1:1로 매핑�
 | Form Field | `<FormField>` | `ui/molecules/FormField.tsx` | label + input + error |
 | Card | `<Card>` | `ui/molecules/Card.tsx` | Header/Body/Footer 포함 |
 | Modal | `<Modal>` | `ui/molecules/Modal.tsx` | portal, ESC 닫기, useDisclosure 와 함께 |
+| Confirm Dialog | `<ConfirmDialog>` | `ui/molecules/ConfirmDialog.tsx` | 확인/취소 2버튼, tone: danger/primary (삭제 확인 등) |
+| Search Bar | `<SearchBar>` | `ui/molecules/SearchBar.tsx` | 아이콘 + 지우기 버튼, value/onChange 제어 |
 | Page Header | `<PageHeader>` | `ui/molecules/PageHeader.tsx` | title + description + actions |
 | Empty State | `<EmptyState>` | `ui/molecules/EmptyState.tsx` | 데이터 없음 |
 | Loading State | `<LoadingState>` | `ui/molecules/LoadingState.tsx` | 로딩 스피너 |
