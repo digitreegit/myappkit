@@ -54,11 +54,30 @@ Figma(Tokens Studio)가 **디자인 진실의 원천(source of truth)**입니다
 5. `.github/workflows/token-update-pr.yml` 가 자동으로 토큰 빌드 후 **PR 생성** → 리뷰 후 merge
    (Figma 변경이 앱에 즉시 반영되지 않고, 항상 PR 리뷰를 거침)
 
-### (선택) Cursor ↔ Figma 라이브 연동
-Figma MCP 서버를 연결하면 Cursor가 Figma 변수를 직접 읽거나, 우리 토큰으로 Figma 디자인 시스템을 생성하는 양방향 작업이 가능합니다.
-- Cursor: Settings → MCP → Figma 서버(플러그인) 활성화
-- 활성화 후 "figma 변수를 figma/tokens 로 동기화해줘" 같이 요청 가능
-- 현재 워크스페이스 Figma MCP **연결됨** (`use_figma`/`get_variable_defs` 사용 가능).
+## 코드 → Figma 변수 (MCP 없이, Tokens Studio import) ★권장
+
+우리 토큰으로 **Figma Variables(Light/Dark 모드 포함)** 를 만드는 가장 확실한 경로.
+MCP 호출이 필요 없어 플랜 한도와 무관합니다.
+
+1. `npm run export:figma` → `figma/tokens/tokens-studio.json` 생성
+   (primitives / light / dark 세트, semantic 은 `{color.neutral.900}` alias 유지)
+2. Figma 에서 **Tokens Studio** 플러그인 실행 → Settings → **Import** → 위 JSON 선택
+   - 또는 GitHub sync 로 연결해 자동으로 가져오기
+3. 토큰 세트 활성화: `primitives` + (`light` 또는 `dark`)
+4. 플러그인의 **Export → Figma Variables** 실행
+   - `primitives` = 값, `light`/`dark` = primitives 를 참조하는 semantic
+   - light/dark 를 한 컬렉션의 두 모드로 매핑하면 모드 전환까지 동작
+5. 토큰이 바뀌면 1~4 반복 (또는 GitHub sync 자동화)
+
+> 토큰 전용 Figma 파일은 이미 생성됨: **Skyface App Kit — Design Tokens**
+> (`https://www.figma.com/design/qIp66VulfsG9flSiuem0r7`)
+
+### (선택) Cursor ↔ Figma 라이브 연동 (MCP)
+Figma MCP 서버로 Cursor 가 변수를 직접 읽고/쓰는 양방향도 가능하지만, **플랜별 호출 한도**가 있습니다.
+- **Starter + View/Collab 시트 = 월 6회** (읽기·쓰기 도구 모두 카운트) → 디자인 시스템 일괄 생성엔 부족.
+- 한도 확장: Pro/Org/Enterprise + **Full/Dev 시트** (200~600/일).
+- 한도 안에서는 "figma 변수를 figma/tokens 로 동기화해줘" 처럼 요청 가능.
+- **한도가 빠듯하면 위의 Tokens Studio import 경로를 사용하세요.**
 
 ### 참조한 Figma 파일 & 모노크롬 정렬 (2026-05)
 - 참조: [shadcn/ui Design System (Community)](https://www.figma.com/design/tqcXyrrFv1UqnLXPGKODt7/-shadcn-ui---Design-System--Community-)

@@ -11,6 +11,7 @@
   "scripts": {
     "build:tokens": "tsx scripts/build-tokens.ts",
     "sync:tokens": "tsx scripts/sync-figma-tokens.ts",
+    "export:figma": "tsx scripts/export-tokens-studio.ts",
     "create-app": "tsx scripts/create-new-app.ts",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "lint": "eslint \"packages/**/*.{ts,tsx}\"",
