@@ -49,6 +49,7 @@ jobs:
             - 생성물: `packages/theme/src/tokens.generated.ts`, `packages/theme/src/variables.css`
           branch: bot/token-update
           add-paths: |
+            figma/tokens/tokens-studio.json
             figma/tokens/tokens.json
             figma/tokens/light.json
             figma/tokens/dark.json
