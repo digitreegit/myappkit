@@ -30,29 +30,50 @@ Figma(Tokens Studio)가 **디자인 진실의 원천(source of truth)**입니다
 4. `npm run build:tokens` 실행.
 5. 변경된 `packages/theme/*` 를 커밋.
 
-## 절차 (자동 / 선택)
-- Tokens Studio의 GitHub sync 기능으로 `figma/tokens/`에 자동 PR을 올리면,
-  `.github/workflows/token-update-pr.yml` 이 토큰 빌드 후 결과를 PR에 포함합니다.
+## ★ Figma 변경 → 앱 반영 (MCP 없이, GitHub sync) — 검증 완료
 
-## 실제 연동 설정 (Tokens Studio → GitHub)
+전체 루프: **Figma(Tokens Studio)에서 토큰 변경 → GitHub push → CI가 PR 생성 → 리뷰/merge → 앱 반영.**
+Figma MCP 호출이 전혀 필요 없어 플랜 한도와 무관합니다.
 
-빌더는 **두 가지 포맷을 자동 인식**합니다:
-- 단순: `"primary": "#4f46e5"`
-- Tokens Studio/DTCG: `"primary": { "$value": "#4f46e5", "$type": "color" }`
+```text
+[Figma + Tokens Studio]  ──push──▶  figma/tokens/tokens-studio.json   (브랜치: tokens/update)
+        │
+        ▼  GitHub Actions: token-update-pr.yml
+  npm run import:figma   (tokens-studio.json → tokens/light/dark.json, shadow 등 보존 merge)
+  npm run sync:tokens    (alias 검증 + theme 재생성)
+        │
+        ▼
+  🎨 PR 자동 생성 (bot/token-update)  ──리뷰/merge──▶  packages/ui + 모든 앱 반영
+```
 
-→ Tokens Studio가 내보내는 그대로 `figma/tokens/`에 넣으면 됩니다. 변환 작업 불필요.
-
-### Tokens Studio GitHub sync 설정
+### Tokens Studio GitHub sync 설정 (단일 파일 — 권장)
 1. Figma에서 Tokens Studio 플러그인 → Settings → **Sync providers** → **GitHub** 추가
 2. 입력값:
    - Repository: `digitreegit/myappkit`
-   - Branch: `tokens/update` (main 직접 말고 별도 브랜치 권장)
-   - Token storage location (path): `figma/tokens`
-   - File structure: **Multiple files** (set별로 `tokens.json`/`light.json`/`dark.json` 생성)
+   - Branch: `tokens/update` (main 직접 말고 별도 브랜치 — CI 트리거가 main 제외)
+   - Token storage location (path): `figma/tokens/tokens-studio.json`
+   - File structure: **Single file**
 3. Personal Access Token: `digitreegit` 계정의 `repo` 권한 토큰
-4. Tokens Studio에서 **Push to GitHub** → `tokens/update` 브랜치에 커밋됨
-5. `.github/workflows/token-update-pr.yml` 가 자동으로 토큰 빌드 후 **PR 생성** → 리뷰 후 merge
+4. Tokens Studio에서 토큰 편집 후 **Push to GitHub** → `tokens/update` 브랜치에 커밋
+5. `.github/workflows/token-update-pr.yml` 가 자동 실행:
+   `import:figma` → `sync:tokens` → **PR 생성** → 리뷰 후 merge 하면 앱에 적용
    (Figma 변경이 앱에 즉시 반영되지 않고, 항상 PR 리뷰를 거침)
+
+> **로컬 검증(2026-05):** `tokens-studio.json` 의 light `primary` 를 `{color.neutral.900}` →
+> `{color.brand.600}` 로 바꾸고 `npm run sync:figma` 실행 → `--sf-color-primary` 가
+> `15 23 42`(#0f172a) → `79 70 229`(#4f46e5) 로 갱신됨을 확인. (이후 원복)
+
+### import / export 스크립트 (양방향, 외부 의존성 0)
+- `npm run export:figma` : `figma/tokens/{tokens,light,dark}.json` → `tokens-studio.json` (Figma 로 보낼 seed)
+- `npm run import:figma` : `tokens-studio.json` → `figma/tokens/{tokens,light,dark}.json` (Figma 변경 되돌리기, deep-merge 로 `shadow` 등 보존)
+- `npm run sync:figma`   : `import:figma` + `build:tokens` (한 방에 적용)
+
+빌더는 **두 포맷을 자동 인식**합니다: 단순(`"primary": "#4f46e5"`) / DTCG(`{ "$value": "#4f46e5", "$type": "color" }`).
+
+### (대안) Multiple files 직접 sync
+Tokens Studio "Multiple files" 로 `tokens.json`/`light.json`/`dark.json` 을 직접 쓸 수도 있습니다.
+이 경우 set 이름을 파일명과 맞추고(primitive set = `tokens`), `import:figma` 없이 `sync:tokens` 만 돌면 됩니다.
+단, Tokens Studio 가 다루지 않는 키(예: `shadow`)는 누락될 수 있으니 단일 파일 경로를 권장합니다.
 
 ## 코드 → Figma 변수 (MCP 없이, Tokens Studio import) ★권장
 

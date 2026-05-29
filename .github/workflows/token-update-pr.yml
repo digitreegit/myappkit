@@ -29,7 +29,13 @@ jobs:
       - name: Install
         run: npm install
 
-      - name: Rebuild tokens
+      # Tokens Studio(단일 파일 sync)가 tokens-studio.json 을 push 한 경우
+      # 빌드 입력(tokens/light/dark.json)으로 되돌린 뒤(없으면 no-op),
+      # alias 검증 + theme 재생성을 수행한다.
+      - name: Import Tokens Studio -> build inputs
+        run: npm run import:figma
+
+      - name: Validate & rebuild tokens
         run: npm run sync:tokens
 
       - name: Create Pull Request
@@ -38,10 +44,13 @@ jobs:
           commit-message: "tokens: rebuild design tokens from figma"
           title: "🎨 디자인 토큰 업데이트"
           body: |
-            Figma 토큰 변경으로 `@skyface/theme` 가 재생성되었습니다.
-            - `packages/theme/src/tokens.generated.ts`
-            - `packages/theme/src/variables.css`
+            Figma(Tokens Studio) 토큰 변경이 코드에 반영되었습니다. 머지하면 앱에 적용됩니다.
+            - 입력: `figma/tokens/*.json`
+            - 생성물: `packages/theme/src/tokens.generated.ts`, `packages/theme/src/variables.css`
           branch: bot/token-update
           add-paths: |
+            figma/tokens/tokens.json
+            figma/tokens/light.json
+            figma/tokens/dark.json
             packages/theme/src/tokens.generated.ts
             packages/theme/src/variables.css
