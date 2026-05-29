@@ -12,9 +12,10 @@ Atomic Design 방법론을 코드와 디자인에 동시에 적용해, "디자�
 | 영역 | 위치 | 설명 |
 | --- | --- | --- |
 | 공통 UI | `packages/ui` | Atomic Design 기반 React 컴포넌트 (atoms/molecules/organisms) |
-| 재사용 Hooks | `packages/hooks` | `useDebounce`, `useDisclosure`, `useLocalStorage` 등 |
+| 재사용 Hooks | `packages/hooks` | `useDebounce`, `useDisclosure`, `useAuth`, `useFormSubmit` 등 |
 | 유틸 | `packages/utils` | formatter, validation(zod), helpers |
-| API 래퍼 | `packages/api` | Supabase client / auth / 타입 안전 CRUD |
+| API 래퍼 | `packages/api` | Supabase client / auth / CRUD / Repository 어댑터 |
+| 데이터 레이어 | `packages/query` | react-query + Repository 추상화 (백엔드 교체 무관) |
 | 테마 | `packages/theme` | Figma 토큰에서 생성된 디자인 토큰 (TS) |
 | 공유 설정 | `packages/config` | eslint / tsconfig / tailwind / prettier preset |
 | Figma 토큰 | `figma/tokens` | Tokens Studio export 원본 + 매핑 문서 |

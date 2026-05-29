@@ -21,13 +21,15 @@ const TOKENS_DIR = resolve(ROOT, "figma/tokens");
 type Json = Record<string, any>;
 const readJson = (p: string): Json => JSON.parse(readFileSync(p, "utf8"));
 
+/** DTCG($value) 와 단순 문자열 리프를 모두 지원하는 플래트너. */
 function flatten(obj: Json, prefix = ""): Record<string, string> {
   const out: Record<string, string> = {};
   for (const [k, v] of Object.entries(obj)) {
     if (k.startsWith("$")) continue;
     const key = prefix ? `${prefix}.${k}` : k;
-    if (v && typeof v === "object") Object.assign(out, flatten(v, key));
-    else out[key] = String(v);
+    if (typeof v === "string") out[key] = v;
+    else if (v && typeof v === "object" && "$value" in v) out[key] = String(v.$value);
+    else if (v && typeof v === "object") Object.assign(out, flatten(v, key));
   }
   return out;
 }
