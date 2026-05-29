@@ -20,9 +20,11 @@ import { BookmarkEditor } from "./BookmarkEditor";
 interface BookmarksPageProps {
   dark: boolean;
   onToggleTheme: () => void;
+  userEmail?: string;
+  onSignOut?: () => void;
 }
 
-export function BookmarksPage({ dark, onToggleTheme }: BookmarksPageProps) {
+export function BookmarksPage({ dark, onToggleTheme, userEmail, onSignOut }: BookmarksPageProps) {
   const { toast } = useToast();
   const editor = useDisclosure();
   const [editing, setEditing] = useState<Bookmark | null>(null);
@@ -71,6 +73,11 @@ export function BookmarksPage({ dark, onToggleTheme }: BookmarksPageProps) {
             <Button variant="ghost" size="sm" onClick={onToggleTheme}>
               {dark ? "☀️" : "🌙"}
             </Button>
+            {onSignOut && (
+              <Button variant="ghost" size="sm" onClick={onSignOut} title={userEmail}>
+                로그아웃
+              </Button>
+            )}
             <Button size="sm" onClick={openNew}>
               + 새 북마크
             </Button>

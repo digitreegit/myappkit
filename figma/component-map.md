@@ -33,6 +33,7 @@ Figma의 컴포넌트와 `packages/ui` 의 코드 컴포넌트를 1:1로 매핑�
 | Figma 컴포넌트 | 코드 컴포넌트 | 경로 | 비고 |
 | --- | --- | --- | --- |
 | Auth Form | `<AuthForm>` | `ui/organisms/AuthForm.tsx` | 로그인/회원가입 |
+| Auth Gate | `<AuthGate>` | `ui/organisms/AuthGate.tsx` | 이메일 로그인 게이트, AuthAdapter 주입 (render-prop) |
 
 ## 매핑 규칙
 - Figma 컴포넌트 이름 = 코드 컴포넌트 이름 (PascalCase).

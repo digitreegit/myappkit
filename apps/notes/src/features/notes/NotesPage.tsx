@@ -20,9 +20,11 @@ import { NoteEditor } from "./NoteEditor";
 interface NotesPageProps {
   dark: boolean;
   onToggleTheme: () => void;
+  userEmail?: string;
+  onSignOut?: () => void;
 }
 
-export function NotesPage({ dark, onToggleTheme }: NotesPageProps) {
+export function NotesPage({ dark, onToggleTheme, userEmail, onSignOut }: NotesPageProps) {
   const { toast } = useToast();
   const editor = useDisclosure();
   const [editing, setEditing] = useState<Note | null>(null);
@@ -68,6 +70,11 @@ export function NotesPage({ dark, onToggleTheme }: NotesPageProps) {
             <Button variant="ghost" size="sm" onClick={onToggleTheme}>
               {dark ? "☀️" : "🌙"}
             </Button>
+            {onSignOut && (
+              <Button variant="ghost" size="sm" onClick={onSignOut} title={userEmail}>
+                로그아웃
+              </Button>
+            )}
             <Button size="sm" onClick={openNew}>
               + 새 노트
             </Button>
