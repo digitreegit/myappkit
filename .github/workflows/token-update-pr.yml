@@ -1,0 +1,47 @@
+name: token-update-pr
+
+# Figma/Tokens Studio 가 figma/tokens/*.json 을 푸시(또는 수동 실행)하면
+# 토큰을 다시 빌드해 결과를 PR 로 올린다.
+
+on:
+  push:
+    paths:
+      - "figma/tokens/**"
+    branches-ignore:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  rebuild-tokens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm install
+
+      - name: Rebuild tokens
+        run: npm run sync:tokens
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "tokens: rebuild design tokens from figma"
+          title: "🎨 디자인 토큰 업데이트"
+          body: |
+            Figma 토큰 변경으로 `@skyface/theme` 가 재생성되었습니다.
+            - `packages/theme/src/tokens.generated.ts`
+            - `packages/theme/src/variables.css`
+          branch: bot/token-update
+          add-paths: |
+            packages/theme/src/tokens.generated.ts
+            packages/theme/src/variables.css

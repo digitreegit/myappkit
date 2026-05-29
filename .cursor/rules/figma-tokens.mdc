@@ -1,0 +1,25 @@
+---
+description: 디자인 토큰 작업 규칙 (figma/tokens ↔ @skyface/theme)
+globs: figma/**,packages/theme/**,packages/config/tailwind/**
+alwaysApply: false
+---
+
+# 디자인 토큰 규칙
+
+## 진실의 원천
+`figma/tokens/*.json` 이 원본. `packages/theme/src/{tokens.generated.ts,variables.css}` 는 **자동 생성물 — 직접 수정 금지.**
+
+## 토큰 추가/변경 절차
+1. primitive 가 필요하면 `figma/tokens/tokens.json` 에 추가.
+2. semantic 은 `light.json` **과** `dark.json` 양쪽에 추가 (한쪽만 금지).
+3. alias 는 `{color.brand.600}` 형식, primitive 경로만 참조.
+4. Tailwind 에 노출하려면 `packages/config/tailwind/preset.cjs` 의 `colors` 에 매핑.
+5. `npm run build:tokens` (또는 `npm run sync:tokens`) 실행.
+
+## 네이밍
+- semantic 은 **용도** 기반: `primary`, `surface`, `danger`. 색 이름(`indigo`)으로 짓지 않기.
+- CSS 변수 접두는 `--sf-`.
+
+## 사용
+- 코드에서는 토큰을 Tailwind 클래스(`bg-primary`)나 `var(--sf-...)` 로만 사용.
+- RN 은 `getColor(token, mode)` 로 동일 토큰 사용.

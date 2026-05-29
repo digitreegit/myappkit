@@ -1,0 +1,24 @@
+---
+description: Supabase/API 작업 규칙 — @skyface/api 래퍼 사용, RLS 필수
+globs: packages/api/**/*.ts,apps/**/lib/**/*.ts,apps/**/*api*.ts
+alwaysApply: false
+---
+
+# Supabase / API 규칙
+
+## 클라이언트
+- 직접 `createClient` 호출하지 말고 `@skyface/api` 의 `createSupabaseClient` 사용.
+- 환경변수 접두사: web=`VITE_`, next=`NEXT_PUBLIC_`, expo=`EXPO_PUBLIC_`.
+- 클라이언트엔 **anon key 만** 노출. service key 절대 클라이언트 코드에 넣지 않기.
+
+## 데이터 접근
+- 반복 쿼리는 `createCrud<Row>(supabase, "table")` 로 감싼다 (list/getById/insert/update/remove).
+- 에러 처리는 `tryCatch`(`@skyface/utils`) 또는 `{ data, error }` 구조 확인.
+- 패턴은 `snippets/supabase-crud.md`, 인증은 `snippets/auth.md` 참고.
+
+## 보안 (필수)
+- 모든 테이블에 RLS 활성화 + `auth.uid()` 기반 정책.
+- 사용자 입력은 zod(`@skyface/utils`)로 검증 후 사용.
+
+## 타입
+- `supabase gen types typescript` 결과를 `createSupabaseClient<Database>` 제네릭에 주입.

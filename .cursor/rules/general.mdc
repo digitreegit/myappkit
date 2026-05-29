@@ -1,0 +1,39 @@
+---
+description: Skyface App Kit 전역 규칙 — 재사용 우선, 토큰 우선, 모노레포 구조 준수
+alwaysApply: true
+---
+
+# Skyface App Kit — 전역 규칙
+
+이 저장소는 "앱 공장" 모노레포입니다. 코드를 작성하기 전에 항상 아래를 지킵니다.
+
+## 1. 재사용 먼저 (가장 중요)
+새 컴포넌트/훅/유틸을 만들기 **전에** 이미 있는지 먼저 찾습니다.
+- UI → `@skyface/ui` (`packages/ui`)
+- 훅 → `@skyface/hooks`
+- 유틸/검증 → `@skyface/utils`
+- Supabase/API → `@skyface/api`
+- 토큰/테마 → `@skyface/theme`
+있으면 그대로 import 해서 씁니다. 비슷한 게 있으면 prop 추가로 확장합니다.
+
+## 2. 코드 배치 규칙
+- 여러 앱에서 쓸 코드 → `packages/*` (역방향 의존 금지: 패키지는 앱을 import 하지 않음)
+- 특정 앱 전용 → 그 앱(`apps/<name>`) 안에
+- 재사용성이 보이면 사용자에게 "packages 로 승격"을 제안
+
+## 3. 스타일
+- 색·간격·반경은 **디자인 토큰(Tailwind 클래스)만** 사용: `bg-primary`, `text-foreground`, `rounded-md` 등
+- **hex/rgb/px 하드코딩 금지.** 새 색이 필요하면 figma 토큰에 추가 후 build:tokens
+- 클래스 병합은 `cn()` (`@skyface/ui`)
+
+## 4. 패턴 재사용
+인증/CRUD/폼/구독 등은 `snippets/*.md` 의 패턴을 따릅니다.
+
+## 5. 품질
+- TypeScript strict. `any` 지양.
+- 로딩/에러/빈 상태를 항상 고려.
+- 접근성(label, aria, focus-visible) 기본 적용.
+- 변경 후 `npm run typecheck` 가 통과해야 함.
+
+## 6. 언어
+사용자와의 대화는 한국어로. 코드 주석은 간결하게(의도 위주), 불필요한 설명 주석은 금지.

@@ -1,0 +1,22 @@
+{
+  "$description": "Light 테마 semantic 토큰. 값은 tokens.json(primitive)을 {경로} 로 참조합니다.",
+  "color": {
+    "background": "{color.neutral.0}",
+    "surface": "{color.neutral.0}",
+    "surface-muted": "{color.neutral.50}",
+    "border": "{color.neutral.200}",
+    "input": "{color.neutral.300}",
+    "ring": "{color.brand.500}",
+    "foreground": "{color.neutral.900}",
+    "muted": "{color.neutral.500}",
+    "primary": "{color.brand.600}",
+    "primary-foreground": "{color.neutral.0}",
+    "secondary": "{color.neutral.100}",
+    "secondary-foreground": "{color.neutral.900}",
+    "accent": "{color.brand.500}",
+    "accent-foreground": "{color.neutral.0}",
+    "success": "{color.green.600}",
+    "warning": "{color.amber.500}",
+    "danger": "{color.red.600}"
+  }
+}

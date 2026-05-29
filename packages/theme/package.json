@@ -1,0 +1,16 @@
+{
+  "name": "@skyface/theme",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Figma 토큰에서 생성된 디자인 토큰 + 테마 유틸",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./variables.css": "./src/variables.css"
+  },
+  "scripts": {
+    "build": "tsx ../../scripts/build-tokens.ts"
+  }
+}

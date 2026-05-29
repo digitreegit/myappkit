@@ -1,0 +1,24 @@
+---
+description: 새 앱 생성/템플릿 작업 규칙
+globs: templates/**,apps/**,scripts/create-new-app.ts
+alwaysApply: false
+---
+
+# 앱 / 템플릿 규칙
+
+## 새 앱은 항상 템플릿에서
+- 처음부터 만들지 말고 `npm run create-app -- --template <t> --name <name>` 로 생성.
+- 템플릿: `react-web`(Vite SPA), `nextjs-saas`(Next App Router), `react-native`(Expo).
+- 생성물은 `apps/<name>` 에 들어가며 워크스페이스 멤버가 된다.
+
+## 앱 내부 구조
+- `lib/` 초기화(supabase 등), `features/<도메인>/`, 라우트/페이지 단위 분리.
+- 화면은 `@skyface/ui` 조합으로 구성. 새 재사용 컴포넌트는 `packages/ui` 로.
+
+## 템플릿 수정 시
+- 모든 템플릿은 토큰 CSS(`@skyface/theme/variables.css`)와 Tailwind preset을 연결해야 함.
+- Next 는 `transpilePackages` 에 `@skyface/*` 포함 필수.
+- RN 은 `@skyface/ui`(DOM 전용) 사용 금지 → `@skyface/theme` 토큰으로 네이티브 스타일.
+
+## 출시 전
+`snippets/app-launch-checklist.md` 로 점검.

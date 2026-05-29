@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+.pnp.*
+
+# build output
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+
+# generated theme (rebuild from figma/tokens via npm run build:tokens)
+# NOTE: 생성물이지만 편의를 위해 커밋합니다. 무시하려면 아래 주석 해제
+# packages/theme/src/tokens.generated.ts
+
+# env
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+
+# os / editor
+.DS_Store
+.idea/
+*.swp
+
+# misc
+coverage/
+.turbo/
+.vercel/

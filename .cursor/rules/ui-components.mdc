@@ -1,0 +1,31 @@
+---
+description: UI 컴포넌트 작성 규칙 (Atomic Design + 토큰)
+globs: packages/ui/**/*.tsx,apps/**/*.tsx,templates/**/*.tsx
+alwaysApply: false
+---
+
+# UI 컴포넌트 규칙
+
+## Atomic Design 계층
+- `atoms`: 최소 단위 (Button, Input, Text, Badge, Spinner)
+- `molecules`: atom 조합 (FormField, Card)
+- `organisms`: 화면 블록 (AuthForm)
+- 페이지/레이아웃은 앱(`apps/*`)에.
+
+새 컴포넌트는 계층을 먼저 정하고 `packages/ui/src/<계층>/` 에 둡니다.
+
+## 작성 규칙
+- 함수형 + TS. `interface <Name>Props` export.
+- variant 2개↑ → `class-variance-authority(cva)` 사용 (Button.tsx 참고).
+- 입력류는 `forwardRef` + `displayName`.
+- 토큰 클래스만 사용. `cn()` 으로 병합. **hex 금지.**
+- organisms 는 데이터 fetch 직접 안 함 → props/콜백으로 주입.
+- 접근성: `htmlFor`/`id` 연결, `aria-invalid`, `focus-visible:ring-ring`.
+
+## 추가 후 할 일
+1. 계층 `index.ts` + `packages/ui/src/index.ts` 에 export
+2. `figma/component-map.md` 표에 Figma↔코드 매핑 추가
+
+## 금지
+- 앱 전용 컴포넌트를 `ui` 에 넣지 않기
+- `ui` 가 라우터/스토어/특정 앱에 의존하지 않기

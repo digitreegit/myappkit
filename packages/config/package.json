@@ -1,0 +1,22 @@
+{
+  "name": "@skyface/config",
+  "version": "0.1.0",
+  "private": true,
+  "description": "공유 설정: eslint / tsconfig / tailwind preset / prettier",
+  "type": "module",
+  "exports": {
+    "./eslint": "./eslint/index.cjs",
+    "./prettier": "./prettier/index.json",
+    "./tailwind": "./tailwind/preset.cjs",
+    "./tsconfig/base": "./tsconfig/base.json",
+    "./tsconfig/react": "./tsconfig/react.json",
+    "./tsconfig/react-native": "./tsconfig/react-native.json",
+    "./tsconfig/nextjs": "./tsconfig/nextjs.json"
+  },
+  "files": [
+    "eslint",
+    "prettier",
+    "tailwind",
+    "tsconfig"
+  ]
+}
