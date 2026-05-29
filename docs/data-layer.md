@@ -47,4 +47,16 @@ export const todos = createResourceHooks("todos",
 - 낙관적 업데이트가 필요하면 react-query `onMutate` 사용 (snippets/supabase-crud.md 참고).
 
 ## 실제 사용 예시
-`apps/notes` 가 이 패턴의 전체 예시입니다 (목록·검색·생성/편집·삭제·상태·토스트).
+- `apps/notes` — **로컬(localStorage)** repo 전체 예시 (목록·검색·생성/편집·삭제·상태·토스트).
+- `apps/bookmarks` — **실제 Supabase** 연결 예시. 동일 화면 코드, repo 한 줄만 다름.
+
+## Supabase 연결 체크리스트 (apps/bookmarks 기준)
+1. **테이블 + RLS**: `supabase/migrations/*.sql` 로 버전 관리.
+   - `user_id uuid not null default auth.uid()` + 4개 정책(select/insert/update/delete)을
+     `(select auth.uid()) = user_id` 로 본인 행만 접근.
+2. **환경변수**: `apps/<app>/.env.local` (git 무시)에
+   `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`(publishable key) 설정.
+3. **세션**: RLS 가 `auth.uid()` 기준이므로 **로그인 필수**.
+   - 데모는 익명 로그인 사용 → Supabase 대시보드 → Authentication → Sign In / Providers →
+     **Anonymous sign-ins** 켜기 (1회). 실서비스는 `AuthForm`(@skyface/ui)으로 이메일 로그인.
+4. **폴백**: `.env.local` 이 없으면 자동으로 로컬 repo 로 동작 (오프라인 데모 가능).
