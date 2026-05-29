@@ -58,7 +58,14 @@ Figma(Tokens Studio)가 **디자인 진실의 원천(source of truth)**입니다
 Figma MCP 서버를 연결하면 Cursor가 Figma 변수를 직접 읽거나, 우리 토큰으로 Figma 디자인 시스템을 생성하는 양방향 작업이 가능합니다.
 - Cursor: Settings → MCP → Figma 서버(플러그인) 활성화
 - 활성화 후 "figma 변수를 figma/tokens 로 동기화해줘" 같이 요청 가능
-- 현재 워크스페이스엔 Figma MCP가 **미연결** 상태라, 위 GitHub sync 방식이 기본 경로입니다.
+- 현재 워크스페이스 Figma MCP **연결됨** (`use_figma`/`get_variable_defs` 사용 가능).
+
+### 참조한 Figma 파일 & 모노크롬 정렬 (2026-05)
+- 참조: [shadcn/ui Design System (Community)](https://www.figma.com/design/tqcXyrrFv1UqnLXPGKODt7/-shadcn-ui---Design-System--Community-)
+- 확인 결과: primitive(slate/red 스케일, 타이포)는 우리 `tokens.json` 과 이미 일치.
+- 차이는 semantic `primary` 뿐 — shadcn은 **모노크롬(slate)** primary 사용.
+- 결정: `light.json`/`dark.json` 의 `primary`/`accent`/`ring`/`input` 을 slate 계열로 정렬해
+  shadcn 룩과 일치시킴 (light primary=slate-900, dark primary=slate-50).
 
 ## 규칙
 - **코드에서 hex 값을 직접 쓰지 않습니다.** 항상 토큰(=Tailwind 클래스/CSS 변수)을 사용.
